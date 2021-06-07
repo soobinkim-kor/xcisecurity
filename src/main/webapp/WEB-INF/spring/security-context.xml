@@ -8,6 +8,7 @@
 	<security:authentication-manager>
 		<security:authentication-provider>
 			<security:jdbc-user-service data-source-ref="dataSource" />
+			<security:password-encoder  ref="passwordEncoder"/>
 		</security:authentication-provider>
 	</security:authentication-manager>
 
@@ -38,4 +39,23 @@
 		<security:logout />
 	</security:http>
 	
+	
+	<security:authentication-manager>
+		<security:authentication-provider>
+			<security:jdbc-user-service data-source-ref="dataSource"
+				users-by-username-query="SELECT  usr_id     as username
+				                                ,usr_pw     as password
+				                                ,usr_status as enabled
+                                         FROM t_user WHERE usr_id=?"
+                authorities-by-username-query="SELECT usr_id as username
+                                                     ,CASE WHEN usr_level=3 THEN 'ROLE_ADMIN'
+                                                           WHEN usr_level=2 THEN 'ROLE_MANAGER'
+                                                                            ELSE 'ROLE_USER' END as authority
+                                                     ,usr_info
+                                                     ,usr_name
+                                               FROM t_user WHERE usr_id=?"
+			/>
+		<security:password-encoder ref="passwordEncoder" />
+		</security:authentication-provider>
+	</security:authentication-manager>
 </beans>
