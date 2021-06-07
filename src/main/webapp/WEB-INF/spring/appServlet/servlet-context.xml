@@ -29,6 +29,7 @@
 	<context:component-scan
 		base-package="net.developia.sec" />
 
+	<!-- 
 	<default-servlet-handler />
 
 	<view-controller path="/" view-name="redirect:index" />
@@ -42,7 +43,7 @@
 		view-name="sec_view/adminMain" />
 	<view-controller path="/member/main"
 		view-name="sec_view/memberMain" />
-
+	-->
 
 
 </beans:beans>

@@ -5,28 +5,37 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-   <security:http use-expressions="true">
-      <security:intercept-url pattern="/admin/**" 
-                         access="hasAuthority('ROLE_ADMIN')" />
-      <security:intercept-url pattern="/manager/**" 
-                         access="hasRole('ROLE_MANAGER')" />
-      <security:intercept-url pattern="/member/**" access="isAuthenticated()" />
-      <security:intercept-url pattern="/**" access="permitAll"/>
-      <security:form-login />
-      <security:logout />
-   </security:http>
+	<security:authentication-manager>
+		<security:authentication-provider>
+			<security:jdbc-user-service data-source-ref="dataSource" />
+		</security:authentication-provider>
+	</security:authentication-manager>
 
-   <security:authentication-manager>
-      <security:authentication-provider>
-         <security:user-service>
-            <security:user name="user1" password="1111" 
-                      authorities="ROLE_USER" />
-            <security:user name="manager1" password="1111" 
-                      authorities="ROLE_MANAGER,ROLE_USER" />
-            <security:user name="admin1" password="1111" 
-                      authorities="ROLE_ADMIN,ROL_MANAGER,ROLE_USER" />
-         </security:user-service>
-      </security:authentication-provider>
-   </security:authentication-manager>
+	<security:http use-expressions="true">
 
+		<security:intercept-url pattern="/user/**"    access="permitAll" />
+		<security:intercept-url pattern="/admin/**"   access="hasAuthority('ROLE_ADMIN')" />
+		<security:intercept-url pattern="/manager/**" access="hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER')" />
+		<security:intercept-url pattern="/member/**"  access="isAuthenticated()" />
+		<security:intercept-url pattern="/**"         access="permitAll"/>
+		<!--  <security:logout 
+			logout-url="/user/log_out"	
+			logout-success-url="/user/logout2"		
+			invalidate-session="true"
+			delete-cookies="true"
+		/> -->
+		
+		<!-- <security:form-login
+			username-parameter="usr_id"
+			password-parameter="usr_pw"
+			
+			login-page="/user/"
+			login-processing-url="/user/loginAction"
+			default-target-url="/board/"
+			authentication-failure-url="/user/login_error"
+		/> -->
+		<security:form-login />
+		<security:logout />
+	</security:http>
+	
 </beans>
