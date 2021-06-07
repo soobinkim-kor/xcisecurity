@@ -22,9 +22,9 @@
             <security:user name="user1" password="1111" 
                       authorities="ROLE_USER" />
             <security:user name="manager1" password="1111" 
-                      authorities="ROLE_MANAGER" />
+                      authorities="ROLE_MANAGER,ROLE_USER" />
             <security:user name="admin1" password="1111" 
-                      authorities="ROLE_ADMIN,ROLE_USER" />
+                      authorities="ROLE_ADMIN,ROL_MANAGER,ROLE_USER" />
          </security:user-service>
       </security:authentication-provider>
    </security:authentication-manager>
